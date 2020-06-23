@@ -189,23 +189,34 @@ public class fRailFence extends javax.swing.JFrame {
 
     private void btnDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeActionPerformed
         // TODO add your handling code here:
-        String cipherText = txtCt.getText();
-        int r = Integer.parseInt(txtKhoa.getText());//khóa củng là số dòng
-        String result = "";
-        int s;//số cột của mảng
-        if (cipherText.length() % r == 0) {
-            s = cipherText.length() / r;
-        } else {
-            s = (cipherText.length() / r) + 1;
-        }
-
-        for (int i = 0; i < s; i++) {
-            int k = i;
-            while (k < cipherText.length()) {
-                result += cipherText.charAt(k);
-                k+=(r+1);
+        String s = txtCt.getText();
+        int k = Integer.parseInt(txtKhoa.getText());//khóa củng là số dòng
+        int n=s.length();
+        int sd,sc;
+        sd=k;
+        sc=n/sd+1;
+        int t=0;
+        int sodu = n%sd;
+        int sokytu =sc;
+        char hr[][]=new char[sd][sc];
+        for(int i=0;i<sd;i++){
+            if(i>=sodu) sokytu=sc-1;
+            for(int j=0;j<sokytu;j++){
+                hr[i][j] =s.charAt(t);
+                t++;
             }
         }
+        int c,d;
+        c=0;d=0;
+        String kq="";
+        for(int i=0;i<n;i++){
+            kq+=hr[d][c];
+            d++;
+            if(d==k){
+                c++;d=0;
+            }
+        }
+        this.txtCt.setText(kq);
 //        int k = 0;
 //        char ct[][] = new char[r][s];
 //        for (int i = 0; i < r; i++) {
@@ -235,7 +246,7 @@ public class fRailFence extends javax.swing.JFrame {
 //            }
 //        }
 
-        txtPt.setText(result);
+        
     }//GEN-LAST:event_btnDeActionPerformed
 
     /**

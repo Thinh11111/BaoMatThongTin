@@ -23,8 +23,13 @@ public class fVigenere extends javax.swing.JFrame {
     /**
      * Creates new form fVigenere
      */
+    int vig[][];
     public fVigenere() {
         initComponents();
+        vig =new int [26][26];
+        for(int i=0;i<26;i++)
+            for(int j=0;j<26;j++)
+                vig[i][j]=(i+j)%26;
     }
 
     /**
@@ -210,51 +215,39 @@ public class fVigenere extends javax.swing.JFrame {
         }
         txtCt.setText(result);
     }//GEN-LAST:event_btnEnActionPerformed
+    public String mahoa( String banro, String key){
+            int n=banro.length();
+            String banma="";
+            int k=0;
+            for(int i=0;i<n;i++)
+                if(Character.isLetter(banro.charAt(i)))
+                {
+                    banma+=mahoa(banro.charAt(i),key.charAt(k));
+                    k++;
+                    k=k%key.length();
 
+                }else
+                    banma+=banro.charAt(i);
+            return banma;
+    }
+    char mahoa(char x, char k)
+    {
+        int xn=Character.toUpperCase(x)-'A';
+        int kn=Character.toUpperCase(k)-'A';
+        int yn=vig[kn][xn];
+        return(char)(yn+'A');
+    }
     private void btnDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeActionPerformed
         // TODO add your handling code here:
-        int table[][] = new int[26][26];
-        for (int i = 0; i < 26; i++) {
-            for (int j = 0; j < 26; j++) {
-                table[i][j] = (i + j) % 26;
-            }
-        }
-
-        String cipherText = txtCt.getText();//lấy chuỗi cần mã hóa
-        String key = (txtKhoa.getText()).toUpperCase();//lấy chuỗi khóa sau đó in hoa
-        String result = "";//chuỗi kết quả sau mã hóa
-        int keyIndex = 0;//chỉ số khóa
-
-        for (int i = 0; i < cipherText.length(); i++) {
-            char kChar = key.charAt(keyIndex);//lấy kí tự của khóa tại vị trí keyindex
-            int ch2 = ((int) kChar) - 65;//lấy mã ascii của key
-            //JOptionPane.showMessageDialog(null, ch2);
-            char ch = cipherText.charAt(i);
-            //kiểm tra kí tự đặc biệt và dấu cách
-            if (!(65 <= (int) ch && (int) ch <= 90) && !(97 <= (int) ch && (int) ch <= 122)) {
-                result += ch;
-                keyIndex--;
-            }
-            for (int j = 0; j < 26; j++) {
-                if (Character.isUpperCase(ch)) {
-                    if (table[ch2][j] == (int) ch - 65) {
-                        char ch1 = (char) (j + 65);
-                        result += ch1;
-                    }
-                    //JOptionPane.showMessageDialog(null, ch1 + " "+ value +" "+ result);
-                } else if (Character.isLowerCase(ch)) {
-                     if (table[ch2][j] == (int) ch - 97) {
-                        char ch1 = (char) (j + 97);
-                        result += ch1;
-                     }
-                }
-            }
-            keyIndex++;
-            if (keyIndex >= key.length()) {
-                keyIndex = 0;
-            }
-            txtPt.setText(result);
-        }
+        String banma=this.txtCt.getText();
+        String k=this.txtKhoa.getText();
+        String kt1="";
+        int kn=k.length();
+        for(int i=0;i<kn;i++)
+            kt1+=(char)(((26-(Character.toUpperCase(k.charAt(i))-'A'))%26)+'A');
+        this.txtKhoa.setText(kt1);
+        String banro= mahoa(banma,kt1);
+        this.txtPt.setText(banro);
     }//GEN-LAST:event_btnDeActionPerformed
 
     private void btnGhiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGhiActionPerformed
